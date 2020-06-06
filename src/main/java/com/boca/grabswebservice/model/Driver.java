@@ -2,6 +2,7 @@ package com.boca.grabswebservice.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.Where;
@@ -141,6 +142,7 @@ public class Driver {
     @Column(name = "dateOfReg")
     private Date dateOfReg;
 
+    @JsonIgnore
     @OneToOne()
     @JoinColumn(name = "user_id")
     private User user;

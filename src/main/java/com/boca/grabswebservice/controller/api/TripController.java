@@ -66,6 +66,10 @@ public class TripController {
 
 
     @ApiOperation(value = "Get Trips", response = ResponseEntity.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved data"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/all")
     public ResponseEntity<?> getUserTrips(@RequestHeader (name = "Authorization") String jwtToken){
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
@@ -118,7 +122,7 @@ public class TripController {
 
 
     @ApiOperation(value = "Get details of a trip", response = ResponseEntity.class)
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved data"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
@@ -126,11 +130,11 @@ public class TripController {
     public ResponseEntity<?> getTrip( @RequestHeader (name = "Authorization") String jwtToken, @PathVariable Long id){
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         SingleTripResponse singleTripResponse = new SingleTripResponse();
-        if(jwtTokenProvider.validateToken(jwtToken)){
+
             Trip trip = tripService.get(id);
 
             BeanUtils.copyProperties(trip, singleTripResponse);
-        }
+
 
         return  ResponseEntity.ok(singleTripResponse);
     }
