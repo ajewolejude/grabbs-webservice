@@ -1,10 +1,5 @@
 package com.boca.grabswebservice.payload;
 
-import com.boca.grabswebservice.dom.Dashboard;
-import com.boca.grabswebservice.model.Trip;
-
-import java.util.List;
-
 public class JWTLoginSucessReponse {
     private Long id;
     private boolean success;
@@ -13,25 +8,8 @@ public class JWTLoginSucessReponse {
     private String lastname;
     private String firstname;
     private String email;
-    private Dashboard dashboard;
-    private List<Trip> trips;
-
-    public Dashboard getDashboard() {
-        return dashboard;
-    }
 
 
-    public void setDashboard(Dashboard dashboard) {
-        this.dashboard = dashboard;
-    }
-
-    public List<Trip> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
-    }
 
     public String getStatus() {
         return status;
@@ -43,7 +21,7 @@ public class JWTLoginSucessReponse {
 
     private String status;
 
-    public JWTLoginSucessReponse(boolean success, String token, String role, String email, String firstname,  String lastname,String status, Long id, Dashboard dashboard,List<Trip> trips ) {
+    public JWTLoginSucessReponse(boolean success, String token, String role, String email, String firstname,  String lastname,String status, Long id) {
         this.success = success;
         this.token = token;
         this.id = id;
@@ -52,8 +30,6 @@ public class JWTLoginSucessReponse {
         this.firstname = firstname;
         this.email = email;
         this.status = status;
-        this.dashboard = dashboard;
-        this.trips = trips;
     }
 
     public boolean isSuccess() {

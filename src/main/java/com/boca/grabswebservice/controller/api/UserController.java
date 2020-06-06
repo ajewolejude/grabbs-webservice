@@ -1,10 +1,7 @@
 package com.boca.grabswebservice.controller.api;
 
 import com.boca.grabswebservice.dom.Dashboard;
-import com.boca.grabswebservice.model.Driver;
-import com.boca.grabswebservice.model.Role;
-import com.boca.grabswebservice.model.Trip;
-import com.boca.grabswebservice.model.User;
+import com.boca.grabswebservice.model.*;
 import com.boca.grabswebservice.payload.JWTLoginSucessReponse;
 import com.boca.grabswebservice.payload.LoginRequest;
 import com.boca.grabswebservice.payload.trip.TripResponse;
@@ -138,7 +135,7 @@ public class UserController {
 
 
         }
-        return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt,  role, email, user.getFirstName(), user.getLastName(), status, user.getId(), dashboard, tripList));
+        return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt,  role, email, user.getFirstName(), user.getLastName(), status, user.getId()));
     }
 
 
@@ -169,7 +166,13 @@ public class UserController {
 
         } else if(role.contains("MATE")){
 
-            if( mateService.getUserProfile(email)!=null){
+            Mate currentMate =mateService.getUserProfile(email);
+            if( currentMate!=null){
+                tripCompletedList= tripService.getAllByStatusAndDriver(currentMate.getId(),"End");
+                tripList = tripService.getAllByDriver(currentMate.getId());
+                dashboard.setCompletedTripCount((long) tripCompletedList.size());
+                dashboard.setTripCount((long) tripList.size());
+
             }
 
         } else if(role.contains("CORPORATE_TRUCK_OWNER")){
@@ -187,7 +190,7 @@ public class UserController {
 
         }
 
-        return ResponseEntity.ok(new TripResponse(tripList));
+        return ResponseEntity.ok(new TripResponse(dashboard,tripList));
 
     }
 
