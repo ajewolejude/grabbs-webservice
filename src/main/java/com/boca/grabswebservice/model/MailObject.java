@@ -1,0 +1,76 @@
+package com.boca.grabswebservice.model;
+
+import com.sun.istack.NotNull;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
+public class MailObject {
+
+    @Email
+    @NotNull
+    @Size(min = 1, message = "Please, set an email address to send the message to it")
+    private String to;
+    private String recipientName;
+    private String subject;
+    private String text;
+    private String senderName;
+    private Long requestId;
+    private String templateEngine;
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getTemplateEngine() {
+        return templateEngine;
+    }
+
+    public void setTemplateEngine(String templateEngine) {
+        this.templateEngine = templateEngine;
+    }
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
+}
