@@ -27,6 +27,63 @@ public class User implements UserDetails {
     private String password;
     @Transient
     private String confirmPassword;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Driver driver;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Mate mate;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private CompanyOwner company_owner;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PrivateOwner private_owner;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Merchant merchant;
+
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public Mate getMate() {
+        return mate;
+    }
+
+    public void setMate(Mate mate) {
+        this.mate = mate;
+    }
+
+    public CompanyOwner getCompany_owner() {
+        return company_owner;
+    }
+
+    public void setCompany_owner(CompanyOwner company_owner) {
+        this.company_owner = company_owner;
+    }
+
+    public PrivateOwner getPrivate_owner() {
+        return private_owner;
+    }
+
+    public void setPrivate_owner(PrivateOwner private_owner) {
+        this.private_owner = private_owner;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
+    }
+
     public User() {
     }
 
