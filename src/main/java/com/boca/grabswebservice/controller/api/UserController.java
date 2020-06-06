@@ -5,7 +5,9 @@ import com.boca.grabswebservice.model.Driver;
 import com.boca.grabswebservice.model.Role;
 import com.boca.grabswebservice.model.Trip;
 import com.boca.grabswebservice.model.User;
+import com.boca.grabswebservice.payload.JWTLoginSucessReponse;
 import com.boca.grabswebservice.payload.LoginRequest;
+import com.boca.grabswebservice.payload.trip.TripResponse;
 import com.boca.grabswebservice.security.JwtTokenProvider;
 import com.boca.grabswebservice.service.*;
 import com.boca.grabswebservice.service.dashboard.QueryService;
@@ -136,7 +138,7 @@ public class UserController {
 
 
         }
-return new ResponseEntity<String>("Hello World", HttpStatus.CREATED);
+        return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt,  role, email, user.getFirstName(), user.getLastName(), status, user.getId(), dashboard, tripList));
     }
 
 
@@ -184,9 +186,9 @@ return new ResponseEntity<String>("Hello World", HttpStatus.CREATED);
 
 
         }
-        return ResponseEntity.ok(new ResponseEntity<>(
-                tripList,
-                HttpStatus.OK));
+
+        return ResponseEntity.ok(new TripResponse(tripList));
+
     }
 
     @ApiOperation(value = "Register a user", response = ResponseEntity.class)

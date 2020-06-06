@@ -114,7 +114,7 @@ public class JWTLoginSucessReponse {
 
     @Override
     public String toString() {
-        return "JWTLoginSucessReponse{" +
+        return "TripResponse{" +
                 "id=" + id +
                 ", success=" + success +
                 ", token='" + token + '\'' +
