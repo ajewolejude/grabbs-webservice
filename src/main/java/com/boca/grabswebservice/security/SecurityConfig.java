@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(REG_URL).permitAll()
                 .antMatchers(LOGIN_URL).permitAll()
                 .antMatchers(SWAGGER_URL).permitAll()
-                .antMatchers(MOVIE_URL).permitAll()
+                .antMatchers(HELLO_URL).permitAll()
                 .antMatchers(H2_URL).permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                 .permitAll()

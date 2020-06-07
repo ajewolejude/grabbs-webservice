@@ -62,7 +62,7 @@ public class Dashboard {
     public Dashboard() {
     }
 
-    public Dashboard(Long driverCount, Long tripCount, Long completedTripCount, Long truckCount, Long mateCount, BigDecimal earning ) {
+    public Dashboard(Long truckCount, Long driverCount, Long tripCount, Long mateCount, Long completedTripCount, BigDecimal earning ) {
         this.earning = earning;
         this.driverCount = driverCount;
         this.tripCount = tripCount;

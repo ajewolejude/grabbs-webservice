@@ -4,13 +4,15 @@ import com.boca.grabswebservice.dom.Dashboard;
 import com.boca.grabswebservice.model.*;
 import com.boca.grabswebservice.payload.JWTLoginSucessReponse;
 import com.boca.grabswebservice.payload.LoginRequest;
-import com.boca.grabswebservice.payload.trip.TripResponse;
+import com.boca.grabswebservice.payload.DashboardResponse;
 import com.boca.grabswebservice.security.JwtTokenProvider;
 import com.boca.grabswebservice.service.*;
 import com.boca.grabswebservice.service.dashboard.QueryService;
 import com.boca.grabswebservice.utils.UserAuth;
 import com.boca.grabswebservice.validator.UserValidator;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ import java.util.List;
 import static com.boca.grabswebservice.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -71,6 +73,10 @@ public class UserController {
 
 
     @ApiOperation(value = "Login a user", response = ResponseEntity.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
@@ -98,17 +104,10 @@ public class UserController {
         List<Trip> tripList = null;
         List<Trip>  tripCompletedList=null;
         if(role.contains("ADMIN")){
-
-            dashboard = queryService.getAdminDetails();
-            tripList = tripService.findAllByOrderByIdDesc();
             status= "complete";
         }else if(role.contains("DRIVER")){
             Driver currentDriver =driverService.getUserProfileByEmail(email);
           if( currentDriver!=null){
-              tripCompletedList= tripService.getAllByStatusAndDriver(currentDriver.getId(),"End");
-              tripList = tripService.getAllByDriver(currentDriver.getId());
-              dashboard.setCompletedTripCount((long) tripCompletedList.size());
-              dashboard.setTripCount((long) tripList.size());
 
               status= "complete";
           }
@@ -141,8 +140,12 @@ public class UserController {
 
 
     @ApiOperation(value = "Get User Details", response = ResponseEntity.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved data"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/details")
-    public ResponseEntity<?> getUserDetails(@RequestHeader (name = "Authorization") String jwtToken){
+    public ResponseEntity<?> getUserDashboard(@RequestHeader (name = "Authorization") String jwtToken){
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String role = jwtTokenProvider.getUserRolelFromJWT(jwtToken.substring(7));
         Long  id = jwtTokenProvider.getUserIdFromJWT(jwtToken.substring(7));
@@ -190,9 +193,62 @@ public class UserController {
 
         }
 
-        return ResponseEntity.ok(new TripResponse(dashboard,tripList));
+        return ResponseEntity.ok(new DashboardResponse(dashboard));
 
     }
+
+
+    @ApiOperation(value = "Get User Profile", response = ResponseEntity.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved data"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile(@RequestHeader (name = "Authorization") String jwtToken){
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+        String role = jwtTokenProvider.getUserRolelFromJWT(jwtToken.substring(7));
+        Long  id = jwtTokenProvider.getUserIdFromJWT(jwtToken.substring(7));
+        String  email = jwtTokenProvider.getUserEmailFromJWT(jwtToken.substring(7));
+
+        if(role.contains("ADMIN")){
+
+
+        }else if(role.contains("DRIVER")){
+            Driver currentDriver =driverService.getUserProfileByEmail(email);
+            if( currentDriver!=null){
+                return new ResponseEntity<Driver>(currentDriver, HttpStatus.OK);
+
+            }
+
+        } else if(role.contains("MATE")){
+
+            Mate currentMate =mateService.getUserProfile(email);
+            if( currentMate!=null){
+
+                return new ResponseEntity<Mate>(currentMate, HttpStatus.OK);
+
+
+            }
+
+        } else if(role.contains("CORPORATE_TRUCK_OWNER")){
+            if( companyOwnerService.getAllUserDetailsByEmail(email)!=null){
+            }
+
+
+        } else if(role.contains("PRIVATE_TRUCK_OWNER")){
+            if( privateOwnerService.getUserProfileByEmail(email)!=null){
+            }
+
+
+        } else if(role.contains("MERCHANT")){
+
+
+        }
+        return new ResponseEntity<String>("WIP", HttpStatus.OK);
+
+
+    }
+
 
     @ApiOperation(value = "Register a user", response = ResponseEntity.class)
     @PostMapping("/register")
@@ -207,4 +263,11 @@ public class UserController {
 
         return  new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello(){
+        return  new ResponseEntity<String>("hello", HttpStatus.OK);
+    }
+
 }

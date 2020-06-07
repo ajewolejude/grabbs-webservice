@@ -1,98 +1,76 @@
-package com.boca.grabswebservice.model;
+package com.boca.grabswebservice.payload.trip;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
-import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.boca.grabswebservice.model.Process;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "trip")
-@Where(clause="deleted_by = 0")
-public class Trip {
+public class SingleTripResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private Long id;
-
-    @NotNull
-    @NotEmpty(message = "Destination Type cannot be blank")
-    @Column(name = "dest_type")
     private String  dest_type;
 
 
-    @Column(name = "dest_address")
     private String  dest_address;
 
 
-    @Column(name = "start_type")
     private String  start_type;
 
-    @Column(name = "start_address")
     private String  start_address;
 
-    @NotNull
-    @NotEmpty(message = "Remark cannot be blank")
-    @Column(name = "remark")
     private String remark;
 
-    @Column(name = "driver_id")
     private Long driver_id;
 
-    @Column(name = "mate_id")
     private Long mate_id;
 
 
-    @Column(name = "date_of_reg_string")
     private String date_of_reg_string;
 
-    @NotNull()
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date_of_reg")
     private Date date_of_reg;
 
-    @Column(name = "date_of_assign_string")
     private String date_of_assign_string;
 
-    @NotNull()
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date_of_assign")
     private Date date_of_assign;
 
-    @NotNull()
-    @Column(name="truck_id")
     private Long truck_id;
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy="trip", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Process> process;
 
 
-    @NotNull
-    @Column(name = "status")
     private String status;
 
-    @Column(name = "charge")
     private BigDecimal charge;
 
-    @NotNull
-    @Column(name = "deleted_by", columnDefinition = "int default 0")
     private Integer deleted_by;
 
-    @Column(name = "deleted_at", columnDefinition = "int default 0")
-    @Temporal(TemporalType.DATE)
     private Date deleted_at;
 
-    public Trip() {
+    public SingleTripResponse() {
+    }
+
+    public SingleTripResponse(Long id, String dest_type, String dest_address, String start_type, String start_address, String remark, Long driver_id, Long mate_id, String date_of_reg_string, Date date_of_reg, String date_of_assign_string, Date date_of_assign, Long truck_id, List<Process> process, String status, BigDecimal charge, Integer deleted_by, Date deleted_at) {
+        this.id = id;
+        this.dest_type = dest_type;
+        this.dest_address = dest_address;
+        this.start_type = start_type;
+        this.start_address = start_address;
+        this.remark = remark;
+        this.driver_id = driver_id;
+        this.mate_id = mate_id;
+        this.date_of_reg_string = date_of_reg_string;
+        this.date_of_reg = date_of_reg;
+        this.date_of_assign_string = date_of_assign_string;
+        this.date_of_assign = date_of_assign;
+        this.truck_id = truck_id;
+        this.process = process;
+        this.status = status;
+        this.charge = charge;
+        this.deleted_by = deleted_by;
+        this.deleted_at = deleted_at;
     }
 
     public Long getId() {
@@ -239,3 +217,7 @@ public class Trip {
         this.charge = charge;
     }
 }
+
+
+
+
