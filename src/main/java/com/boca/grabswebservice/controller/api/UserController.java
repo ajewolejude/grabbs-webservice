@@ -263,4 +263,11 @@ public class UserController {
 
         return  new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello(){
+        return  new ResponseEntity<String>("hello", HttpStatus.OK);
+    }
+
 }

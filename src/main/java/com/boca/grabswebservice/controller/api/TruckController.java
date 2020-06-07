@@ -304,13 +304,13 @@ public class TruckController implements WebMvcConfigurer {
             //save truck non-media data
             truckService.save(truck);
             try {
-                //loop through media files
-                for (MultipartFile file : files) {
-                    String[] document_details = documentService.uploadFile(file, "truck");
-                    //save media file details in database
-                    Document document = new Document("truck",truck.getId(), document_details[2], document_details[1], document_details[0]);
-                    documentService.save(document);
-                }
+//                //loop through media files
+//                for (MultipartFile file : files) {
+//                    String[] document_details = documentService.uploadFile(file, "truck");
+//                    //save media file details in database
+//                    Document document = new Document("truck",truck.getId(), document_details[2], document_details[1], document_details[0]);
+//                    documentService.save(document);
+//                }
             } catch (Exception e) {
             }
 
@@ -337,10 +337,10 @@ public class TruckController implements WebMvcConfigurer {
     public String showTruck(@PathVariable(name = "id") int id, Model model) {
 
         Truck truck = truckService.get(id);
-        List<Document> documentList = documentService.getDocuments((long) id, "truck");
+        //List<Document> documentList = documentService.getDocuments((long) id, "truck");
         List<Tyre> tyreList = tyreService.getTyres((long) id);
         model.addAttribute("truck", truck);
-        model.addAttribute("documentList", documentList);
+        //model.addAttribute("documentList", documentList);
         model.addAttribute("tyreList", tyreList);
         TruckTransaction truck_trans = truckTransactionService.getCurrentTruckTrans((long) id);
         if (truck_trans != null) {

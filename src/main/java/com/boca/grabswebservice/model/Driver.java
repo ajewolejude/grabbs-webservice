@@ -370,10 +370,12 @@ public class Driver {
         this.dateOfReg = dateOfReg;
     }
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }
 
+    @JsonIgnore
     public void setUser(User user) {
         this.user = user;
     }
